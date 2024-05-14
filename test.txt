@@ -1,5 +1,0 @@
-"codebase": {
-    "type": "git",
-    "gitUrl": "https://github.com/dataloop-ai-apps/google-nnlm.git",
-    "gitTag": "0.0.1"
-  },

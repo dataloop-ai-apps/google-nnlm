@@ -10,7 +10,12 @@
     "Libraries": ["TensorFlow"]
   },
   "version": "0.0.1",
-  "scope": "project",
+  "scope": "public",
+  "codebase": {
+    "type": "git",
+    "gitUrl": "https://github.com/dataloop-ai-apps/google-nnlm.git",
+    "gitTag": "0.0.1"
+  },
 
   "components": {
     "computeConfigs": [
