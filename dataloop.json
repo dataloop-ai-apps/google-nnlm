@@ -1,0 +1,490 @@
+{
+  "name": "google-nnlm-models",
+  "displayName": "Google NNLM Models",
+  "description": "Google's NNLM embeddings model words in high-dimensional space to improve semantic understanding in language tasks.",
+  "attributes": {
+    "Provider": "Google",
+    "License": "Apache 2.0",
+    "Category": "Model",
+    "Media Type": "Text",
+    "Libraries": ["TensorFlow"]
+  },
+  "version": "0.0.1",
+  "scope": "project",
+
+  "components": {
+    "computeConfigs": [
+      {
+        "name": "google-nnlm-deploy",
+        "secrets": [],
+        "runtime": {
+          "podType": "regular-s",
+          "runnerImage": "dataloopai/dtlpy-agent:cpu.py3.10.tf2.16",
+          "concurrency": 1,
+          "autoscaler": {
+            "type": "rabbitmq",
+            "minReplicas": 0,
+            "maxReplicas": 2,
+            "queueLength": 1000
+          },
+          "preemptible": false
+        }
+      }
+    ],
+    "modules": [
+      {
+        "name": "google-nnlm-module",
+        "entryPoint": "model_adapter.py",
+        "className": "Adapter",
+        "computeConfig": "google-nnlm-deploy",
+        "initInputs": [
+          {
+            "type": "Model",
+            "name": "model_entity"
+          }
+        ],
+        "functions": [
+          {
+            "name": "predict_items",
+            "input": [
+              {
+                "type": "Item[]",
+                "name": "items",
+                "description": "The input images for prediction."
+              }
+            ],
+            "output": [
+              {
+                "type": "Item[]",
+                "name": "items",
+                "description": "The same input images for prediction."
+              },
+              {
+                "type": "Annotation[]",
+                "name": "annotations",
+                "description": "The predicted annotations."
+              }
+            ],
+            "displayName": "Predict Items",
+            "displayIcon": "",
+            "description": "The inference function of the model."
+          },
+          {
+            "name": "predict_dataset",
+            "input": [
+              {
+                "type": "Dataset",
+                "name": "dataset",
+                "description": "The input dataset of the items required for prediction."
+              },
+              {
+                "type": "Json",
+                "name": "filters",
+                "description": "The DQL in json format to get all the items required for prediction."
+              }
+            ],
+            "output": [],
+            "displayName": "Predict Dataset",
+            "displayIcon": "",
+            "description": "Inference function of the model on a dataset."
+          }
+        ]
+      }
+    ],
+
+    "models": [
+      {
+        "name": "nnlm-zh-dim50",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-zh-dim50/2",
+          "feature_set_name": "nnlm-zh-50-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Chinese words into a 50-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-zh-dim128",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-zh-dim128/2",
+          "feature_set_name": "nnlm-zh-128-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Chinese words into a 128-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-en-dim50",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-en-dim50/2",
+          "feature_set_name": "nnlm-en-50-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds English words into a 50-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-en-dim128",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-en-dim128/2",
+          "feature_set_name": "nnlm-en-128-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds English words into a 128-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-de-dim50",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-de-dim50/2",
+          "feature_set_name": "nnlm-de-50-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds German words into a 50-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-de-dim128",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-de-dim128/2",
+          "feature_set_name": "nnlm-de-128-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds German words into a 128-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-id-dim50",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-id-dim50/2",
+          "feature_set_name": "nnlm-id-50-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Indonesian words into a 50-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-id-dim128",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-id-dim128/2",
+          "feature_set_name": "nnlm-id-128-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Indonesian words into a 128-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-ja-dim50",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-ja-dim50/2",
+          "feature_set_name": "nnlm-ja-50-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Japanese words into a 50-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-ja-dim128",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-ja-dim128/2",
+          "feature_set_name": "nnlm-ja-128-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Japanese words into a 128-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-ko-dim50",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-ko-dim50/2",
+          "feature_set_name": "nnlm-ko-50-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Korean words into a 50-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-ko-dim128",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-ko-dim128/2",
+          "feature_set_name": "nnlm-ko-128-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Korean words into a 128-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-es-dim50",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-es-dim50/2",
+          "feature_set_name": "nnlm-es-50-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Spanish words into a 50-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-es-dim128",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-es-dim128/2",
+          "feature_set_name": "nnlm-es-128-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Spanish words into a 128-dimensional space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-zh-dim50-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-zh-dim50-with-normalization/2",
+          "feature_set_name": "nnlm-zh-50-with-normalization-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Chinese words into a 50-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-zh-dim128-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-zh-dim128-with-normalization/2",
+          "feature_set_name": "nnlm-zh-128-with-normalization-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Chinese words into a 128-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-en-dim50-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-en-dim50-with-normalization/2",
+          "feature_set_name": "nnlm-en-50-with-normalization-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds English words into a 50-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-en-dim128-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-en-dim128-with-normalization/2",
+          "feature_set_name": "nnlm-en-128-with-normalization-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds English words into a 128-dimensional normalized space to enhance semantic understanding in language tasks."
+      },
+      {
+        "name": "nnlm-de-dim50-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-de-dim50-with-normalization/2",
+          "feature_set_name": "nnlm-de-50-with-normalization-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds German words into a 50-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-de-dim128-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-de-dim128-with-normalization/2",
+          "feature_set_name": "nnlm-de-128-with-normalization-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds German words into a 128-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-id-dim50-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-id-dim50-with-normalization/2",
+          "feature_set_name": "nnlm-id-50-with-normalization-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Indonesian words into a 50-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-id-dim128-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-id-dim128-with-normalization/2",
+          "feature_set_name": "nnlm-id-128-with-normalization-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Indonesian words into a 128-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-ja-dim50-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-ja-dim50-with-normalization/2",
+          "feature_set_name": "nnlm-ja-50-with-normalization-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Japanese words into a 50-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-ja-dim128-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-ja-dim128-with-normalization/2",
+          "feature_set_name": "nnlm-ja-128-with-normalization-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Japanese words into a 128-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-ko-dim50-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-ko-dim50-with-normalization/2",
+          "feature_set_name": "nnlm-ko-50-with-normalization-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Korean words into a 50-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-ko-dim128-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-ko-dim128-with-normalization/2",
+          "feature_set_name": "nnlm-ko-128-with-normalization-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Korean words into a 128-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-es-dim50-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-es-dim50-with-normalization/2",
+          "feature_set_name": "nnlm-es-50-with-normalization-feature-set",
+          "embeddings_size": 50
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Spanish words into a 50-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      },
+      {
+        "name": "nnlm-es-dim128-with-normalization",
+        "moduleName": "google-nnlm-module",
+        "scope": "project",
+        "status": "pre-trained",
+        "configuration": {
+          "model_url": "https://tfhub.dev/google/nnlm-es-dim128-with-normalization/2",
+          "feature_set_name": "nnlm-es-128-with-normalization-feature-set",
+          "embeddings_size": 128
+        },
+        "tags": ["nnlm", "pretrained", "google"],
+        "metadata": {},
+        "description": "A pre-trained model by Google that embeds Spanish words into a 128-dimensional normalized space to enhance semantic understanding in language processing tasks."
+      }
+    ]
+  }
+}

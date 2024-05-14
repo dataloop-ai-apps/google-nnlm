@@ -12,7 +12,7 @@ This repo is a model integration between [Google NNLM text embeddings](https://w
 
 ## Overview
 
-Text embeddings based on feed-forward Neural-Net Language Models[1] with pre-built OOV. Maps from text to 128-dimensional embedding vectors.
+Text embeddings based on feed-forward Neural-Net Language Models with pre-built OOV. Maps from text to 50-dimensional or 128-dimensional embedding vectors.
 
 ## Models
 
