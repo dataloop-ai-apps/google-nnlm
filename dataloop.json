@@ -5,9 +5,10 @@
   "attributes": {
     "Provider": "Google",
     "License": "Apache 2.0",
+    "Libraries": ["TensorFlow"],
+    "Media Type": ["Text"],
     "Category": "Model",
-    "Media Type": "Text",
-    "Libraries": ["TensorFlow"]
+    "NLP": "Embeddings"
   },
   "version": "0.0.2",
   "scope": "public",
@@ -92,6 +93,31 @@
             "displayName": "Predict Dataset",
             "displayIcon": "",
             "description": "Inference function of the model on a dataset."
+          },
+          {
+            "name": "embed_items",
+            "input": [
+              {
+                "type": "Item[]",
+                "name": "items",
+                "description": "The input items for embeddings."
+              }
+            ],
+            "output": [
+              {
+                "type": "Item[]",
+                "name": "items",
+                "description": "The same input items for embeddings."
+              },
+              {
+                "type": "Feature[]",
+                "name": "features",
+                "description": "Embeddings of items."
+              }
+            ],
+            "displayName": "Embed Items",
+            "displayIcon": "",
+            "description": "The inference function of the model."
           }
         ]
       }
