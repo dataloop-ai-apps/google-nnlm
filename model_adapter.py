@@ -17,12 +17,11 @@ class Adapter(dl.BaseModelAdapter):
         self.feature_set_name = self.configuration.get('feature_set_name', 'nnlm-en-128-feature-set')
         self.embeddings_size = self.configuration.get('embeddings_size', 128)
         self.model = hub.load(model_url)
-        self.create_feature_set()
 
     def prepare_item_func(self, item):
         return item
 
-    def predict(self, batch, **kwargs):
+    def embed(self, batch, **kwargs):
 
         for item in batch:
             filename = item.download(overwrite=True)
@@ -44,29 +43,18 @@ class Adapter(dl.BaseModelAdapter):
                 if question["mimetype"] == dl.PromptType.TEXT:
                     text = question["value"]
             else:
-                text = None
+                raise ValueError(f'Unsupported mimetype: {item.mimetype}')
 
             logger.info(f'Extracted text from item: {item.id}')
 
-            if text is not None:
-                embedings = self.model([text]).numpy()
-                try:
-                    self.feature_set.features.create(value=embedings[0].tolist(), entity=item)
-                    logger.info(f'Feature created for item: {item.id}')
-                except dl.exceptions.BadRequest as e:
-                    logger.info('Feature already exists for item: {item.id}')
-        return []
+            embedings = []
 
-    def create_feature_set(self):
-        project = dl.projects.get(project_id=self.model_entity.project_id)
-        try:
-            self.feature_set = project.feature_sets.get(feature_set_name=self.feature_set_name)
-            logger.info(f'Feature Set found! name: {self.feature_set.name}, id: {self.feature_set.id}')
-        except dl.exceptions.NotFound:
-            logger.info('Feature Set not found. creating...')
-            self.feature_set = project.feature_sets.create(name=self.feature_set_name,
-                                                           entity_type=dl.FeatureEntityType.ITEM,
-                                                           project_id=self.model_entity.project_id,
-                                                           set_type='nnlm-google',
-                                                           size=self.embeddings_size)
-            logger.info(f'Feature Set created! name: {self.feature_set.name}, id: {self.feature_set.id}')
+            if text is not None:
+                try:
+                    embedings = self.model([text]).numpy()
+                    logger.info(f'Extracted embeddings from text: {text}')
+                except Exception as e:
+                    logger.error(f'Failed to extract embeddings from text: {text}')
+                    logger.error(e)
+
+        return embedings
