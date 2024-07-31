@@ -51,10 +51,12 @@ class Adapter(dl.BaseModelAdapter):
 
             if text is not None:
                 try:
-                    embedings = self.model([text]).numpy()
+                    embedings = self.model([text]).numpy().tolist()
                     logger.info(f'Extracted embeddings from text: {text}')
                 except Exception as e:
                     logger.error(f'Failed to extract embeddings from text: {text}')
                     logger.error(e)
+            else:
+                logger.error(f'No text found in item: {item.id}')
 
         return embedings
