@@ -10,12 +10,12 @@
     "Category": "Model",
     "NLP": "Embeddings"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scope": "public",
   "codebase": {
     "type": "git",
     "gitUrl": "https://github.com/dataloop-ai-apps/google-nnlm.git",
-    "gitTag": "0.0.3"
+    "gitTag": "0.0.4"
   },
 
   "components": {
