@@ -20,6 +20,7 @@ class Adapter(dl.BaseModelAdapter):
         return item
 
     def embed(self, batch, **kwargs):
+        embedings = []
 
         for item in batch:
             filename = item.download(overwrite=True)
@@ -45,16 +46,17 @@ class Adapter(dl.BaseModelAdapter):
 
             logger.info(f'Extracted text from item: {item.id}')
 
-            embedings = []
-
             if text is not None:
                 try:
-                    embedings = self.model([text]).numpy().tolist()
-                    logger.info(f'Extracted embeddings from text: {text}')
+                    embeding = self.model([text]).numpy().tolist()
+                    embedings.append(embeding)
+                    logger.info(f'Extracted embeddings for from text: {text}')
                 except Exception as e:
                     logger.error(f'Failed to extract embeddings from text: {text}')
                     logger.error(e)
+                    embedings.append([])
             else:
                 logger.error(f'No text found in item: {item.id}')
+                embedings.append([])
 
         return embedings
