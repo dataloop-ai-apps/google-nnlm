@@ -14,8 +14,6 @@ logger = logging.getLogger('google-NNLM')
 class Adapter(dl.BaseModelAdapter):
     def load(self, local_path, **kwargs):
         model_url = self.configuration.get('model_url', 'https://tfhub.dev/google/nnlm-en-dim128/2')
-        self.feature_set_name = self.configuration.get('feature_set_name', 'nnlm-en-128-feature-set')
-        self.embeddings_size = self.configuration.get('embeddings_size', 128)
         self.model = hub.load(model_url)
 
     def prepare_item_func(self, item):
