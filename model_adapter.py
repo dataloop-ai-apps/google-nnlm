@@ -54,9 +54,10 @@ class Adapter(dl.BaseModelAdapter):
                 except Exception as e:
                     logger.error(f'Failed to extract embeddings from text: {text}')
                     logger.error(e)
-                    embedings.append([])
+                    raise e
+
             else:
                 logger.error(f'No text found in item: {item.id}')
-                embedings.append([])
+                raise ValueError(f'No text found in item: {item.id}')
 
         return embedings
