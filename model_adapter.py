@@ -48,7 +48,7 @@ class Adapter(dl.BaseModelAdapter):
 
             if text is not None:
                 try:
-                    embeding = self.model([text]).numpy().tolist()
+                    embeding = self.model([text]).numpy().tolist()[0]
                     embedings.append(embeding)
                     logger.info(f'Extracted embeddings for from text: {text}')
                 except Exception as e:
